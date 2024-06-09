@@ -28,7 +28,7 @@
 #define USE_DSU_WEIGHT 1
 
 class DisjointSet {
-    friend void unionWeights(DisjointSet& dsu, int x, int y, int px, int py, long long value = 0);
+    friend void unionWeights(DisjointSet& dsu, int x, int y, int px, int py, long long value);
     friend void compressWeights(DisjointSet& dsu, int x, int y);
 public:
     DisjointSet(int sz) :
@@ -124,7 +124,7 @@ private:
   这里x和y是操作时的集合节点，要把x所在集合合并到y。px和py是前两者的集合代表元素。
   value是一个缺省值，代表指定x->y的权值，默认为0。
 */
-void unionWeights(DisjointSet& dsu, int x, int y, int px, int py, long long value){
+void unionWeights(DisjointSet& dsu, int x, int y, int px, int py, long long value = 0){
 
 }
 
