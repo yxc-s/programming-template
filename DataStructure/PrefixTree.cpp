@@ -181,3 +181,8 @@ private:
 constexpr int START_ALPHABET = 0;
 constexpr int TRIE_NODE_SIZE = 2;
 using Trie = PrefixTree<std::integral_constant<decltype(START_ALPHABET), START_ALPHABET>, TRIE_NODE_SIZE>;
+
+
+/*
+TODO:如果模板参数是std::integral_constant类型，那么是不是在类中就不需要再使用decltype()进行推导了，直接使用::type就可以。
+*/

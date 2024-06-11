@@ -1,13 +1,13 @@
 template<typename T, typename U, typename V>
-T fastPower(T a, U b, const V& mod) {
+T fastPower(const T& a, U b, const V& mod) {
     assert(b >= 0);
-	T res = 1; 
-    for (; b > 0; a = a * a % mod, b >>= 1){
+	long long res = 1ll; 
+    for (typename std::common_type<T, long long>::type x = a; b > 0; x = x * x % mod, b >>= 1){
         if (b & 1){
-            res = res * a % mod; 
+            res = res * x % mod; 
         }
     }
-	return res; 
+	return static_cast<T>(res); 
 }
 
 template<typename T, typename U>
