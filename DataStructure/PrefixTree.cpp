@@ -7,7 +7,7 @@
  *             实现了基于int型变量的二进制插入删除，以及最大异或值的查询。
  *                        
  *
- * gitHub(仓库地址): https://github.com/100000000000000000000000000000000/programming-template.git
+ * gitHub(仓库地址): https://github.com/yxc-s/programming-template.git
  * 
  */
 

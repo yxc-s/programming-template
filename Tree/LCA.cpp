@@ -1,7 +1,7 @@
 
 /*
  * LCA(最近公共祖先)。
- * gitHub(仓库地址): https://github.com/100000000000000000000000000000000/programming-template.git
+ * gitHub(仓库地址): https://github.com/yxc-s/programming-template.git
  */
 
 

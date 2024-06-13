@@ -12,7 +12,7 @@
  *
  *                             多重线段树的主体所有必备的方法都已实现，无需修改。
  *
- * gitHub(仓库地址): https://github.com/100000000000000000000000000000000/programming-template.git
+ * gitHub(仓库地址): https://github.com/yxc-s/programming-template.git
  */
 
 

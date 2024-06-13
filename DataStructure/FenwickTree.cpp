@@ -5,7 +5,7 @@
  * 基于面向对象的编程思想，本方法尽可能多的隐藏了内部实现的细节，并且将必要的编程接口暴露在外部，并需要对这些接口进行直接的修改。
  * 在该设计中，基础的方法都已实现，如有需要用户可以自行在该结构上进行改进。
  *
- * gitHub(仓库地址): https://github.com/100000000000000000000000000000000/programming-template.git
+ * gitHub(仓库地址): https://github.com/yxc-s/programming-template.git
  */
 
 

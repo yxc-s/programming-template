@@ -8,7 +8,7 @@
  *              左指针和右指针的初值应该为1和0。
  *              查询离线处理好后，可以直接对查询进行暴力搜索。
  * 
- * gitHub(仓库地址): https://github.com/100000000000000000000000000000000/programming-template.git
+ * gitHub(仓库地址): https://github.com/yxc-s/programming-template.git
  */
 
 
