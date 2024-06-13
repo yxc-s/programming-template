@@ -25,16 +25,12 @@
 
 class FenwickTree {
 public:
-    /*
-      按区间最大右端点下标构造。
-    */
+    /* 按区间最大右端点下标构造。*/
     explicit FenwickTree(unsigned int n) : n_(n) {
         ft_.resize(n_);
     }
 
-    /*
-      基于已有的数组构造。
-    */
+    /* 基于已有的数组构造。*/
     FenwickTree(const std::vector<long long>& f) {
         n_ = int(f.size());
         ft_.assign(n_, 0);
@@ -46,9 +42,7 @@ public:
         }
     }
 
-    /*
-      按数组元素出现频次构造
-    */
+    /* 按数组元素出现频次构造*/
     FenwickTree(const std::vector<int>& s) {
         n_ = *std::max_element(s.begin() + 1, s.end()) + 1;
         ft_.resize(n_);
@@ -60,9 +54,7 @@ public:
         }
     }
 
-    /*
-      单点更新
-    */
+    /* 单点更新。 */
     void update(int pos, long long value) {
         while (pos < n_) {
             ft_[pos] += value;
@@ -70,18 +62,14 @@ public:
         }
     }
 
-    /*
-      区间更新
-    */
+    /* 区间更新。*/
     inline void update(int l, int r, long long value) {
         assert(l > 0 && r >= l);
         update(l, value);
         update(r + 1, -value);
     }
 
-    /*
-      单点查询
-    */
+    /* 单点查询。*/
     long long query(int p) {
         assert(p < n_);
         long long res = 0;
@@ -92,9 +80,7 @@ public:
         return res;
     }
 
-    /*
-      区间查询
-    */
+    /* 区间查询。*/
     inline long long query(int l, int r) {
         assert(l <= r);
         return query(r) - query(l - 1);
@@ -109,6 +95,5 @@ private:
 
 private:
     inline int lowbit(int x) { return (x & (-x)); }
-
 
 };

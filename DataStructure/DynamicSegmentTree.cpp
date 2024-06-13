@@ -24,36 +24,25 @@
 
 
 
-/*
-  该节点定义在区间上的操作，可以根据输入的类型重写该结构体。
-*/
+/* 该节点定义在区间上的操作，可以根据输入的类型重写该结构体。*/
 struct UpdateNode {
-    /*
-      自定义区间要执行的操作变量。
-    */
+    /* 自定义区间要执行的操作变量。*/
     int value;
 
 
-    /*
-      自定义初始化构造函数。
-    */
-
+    /* 自定义初始化构造函数。*/
     UpdateNode(int value_ = 0ll): value(value_) {
 
     }
 
 
-    /*
-      懒人标记向下传递时调用，涉及区间操作必须实现。
-    */
+    /*  懒人标记向下传递时调用，涉及区间操作必须实现。 */
     inline void mergeLazyMarks(const UpdateNode& parent_node, int segment_length) {
 
     }
 
 
-    /*
-      清除懒人标记，涉及区间操作必须实现。
-    */
+    /* 清除懒人标记，涉及区间操作必须实现。 */
     inline void clear() {
 
     }
@@ -65,21 +54,15 @@ struct UpdateNode {
 
 struct DynamicSegmentTreeNode {
 
-    /*
-      在区间上要维护的变量值，必须实现。
-    */
+    /* 在区间上要维护的变量值，必须实现。*/
     long long sum;
 
 
-    /*
-      构造函数，必须实现。
-    */
+    /* 构造函数，必须实现。*/
     explicit DynamicSegmentTreeNode(long long value = 0ll): sum(value) {}
 
 
-    /*
-      重载左右孩子区间合并操作，必须实现。
-    */
+    /* 重载左右孩子区间合并操作，必须实现。*/
     friend DynamicSegmentTreeNode operator + (const DynamicSegmentTreeNode& a, const DynamicSegmentTreeNode& b) {
         DynamicSegmentTreeNode res{};
 
@@ -87,10 +70,8 @@ struct DynamicSegmentTreeNode {
     }
 
 
-    /*
-      区间更新方法，必须实现。
-    */
-    inline void applyUpdate(UpdateNode value, int segment_length) {
+    /* 区间更新方法，必须实现。*/
+    inline void applyUpdate(const UpdateNode& value, int segment_length) {
 
     }
 
@@ -130,24 +111,18 @@ public:
     }
 
 
-    /*
-      单点更新。
-    */
-    inline void update(int i, LAZY_TYPE value) {
+    /* 单点更新。*/
+    inline void update(int i, const LAZY_TYPE& value) {
         update(1, left_most_, right_most_, i, i, value);
     }
 
-    /*
-      更新区间值。
-    */
-    inline void update(int i, int j, LAZY_TYPE value) {
+    /* 更新区间值。*/
+    inline void update(int i, int j, const LAZY_TYPE& value) {
         assert(USE_LAZY_FLAG == true);
         update(1, left_most_, right_most_, i, j, value);
     }
 
-    /*
-      获取区间节点。
-    */
+    /* 获取区间节点。*/
     inline NODE_TYPE query(int i, int j) {
         return query(1, left_most_, right_most_, i, j);
     }
@@ -163,10 +138,8 @@ private:
     std::vector<int>                      rchild_;
     std::vector<bool>                     has_lazy_;
 
-    /*
-      区间更新。
-    */
-    void update(int p, int l, int r, int i, int j, LAZY_TYPE value) {
+    /* 区间更新。*/
+    void update(int p, int l, int r, int i, int j, const LAZY_TYPE& value) {
         propagate(p, l, r);
         if (i > j) {
             return;
@@ -185,10 +158,8 @@ private:
         st_[p] = st_[lchild_[p]] + st_[rchild_[p]];
     };
  
-    /*
-      线段树单点更新，位置在pos，数值是value。
-    */
-    void update(int p, int l, int r, int pos, LAZY_TYPE value) {
+    /* 线段树单点更新，位置在pos，数值是value。*/
+    void update(int p, int l, int r, int pos, const LAZY_TYPE& value) {
         if (l == r) {
             st_[p].applyUpdate(value, pos);
             return;
@@ -205,9 +176,7 @@ private:
         st_[p] = st_[lchild_[p]] + st_[rchild_[p]];
     }
 
-    /*
-      区间查询。
-    */
+    /* 区间查询。*/
     NODE_TYPE query(int p, int l, int r, int i, int j) {
         if (USE_LAZY_FLAG) {
             propagate(p, l, r);
@@ -227,9 +196,7 @@ private:
         }
     }
 
-    /*
-      懒人标记向下传播。
-    */
+    /* 懒人标记向下传播。*/
     inline void propagate(int p, int l, int r) {
         if (has_lazy_[p] == true) {
             st_[p].applyUpdate(lazy_[p], r - l + 1);
@@ -243,9 +210,7 @@ private:
         }
     }
 
-    /*
-      使用该函数完全动态分配空间，一般空间比直接分配内存节省百分之50。
-    */
+    /* 使用该函数完全动态分配空间，一般空间比直接分配内存节省百分之50。*/
     inline void checkNodeIndex(int& index) {
         if (index == 0) {
             index = static_cast<int> (st_.size());

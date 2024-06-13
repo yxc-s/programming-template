@@ -21,21 +21,24 @@
 
 template<const unsigned int BLOCK_SIZE>
 struct Query{
-    unsigned int l, r, id, block_id;
+    unsigned int left;
+    unsigned int right;
+    unsigned int query_id;
+    unsigned int block_id;
     long long ans;
 
     Query(){}
 
     Query(unsigned int l_, unsigned int r_, unsigned int id_):
-        l(l_),
-        r(r_),
-        id(id_),
+        left(l_),
+        right(r_),
+        query_id(id_),
         block_id(l / BLOCK_SIZE)
     {}
 
     
-    friend bool operator < (const Query& left, const Query& right) {
-        return left.block_id != right.block_id ? left.block_id < right.block_id :
-            left.block_id & 1 ? left.r > right.r : left.r < right.r;
+    friend bool operator < (const Query& lhs, const Query& rhs) {
+        return lhs.block_id != rhs.block_id ? lhs.block_id < rhs.block_id :
+            lhs.block_id & 1 ? lhs.right > rhs.right : lhs.right < rhs.right;
     }
 };

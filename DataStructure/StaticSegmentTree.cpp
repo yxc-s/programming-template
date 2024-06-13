@@ -28,32 +28,24 @@
   该节点定义在区间上的操作，可以根据输入的类型重写该结构体。
 */
 struct UpdateNode {
-    /*
-      自定义区间要执行的操作变量。
-    */
+
+    /* 自定义区间要执行的操作变量。*/
     int value;
 
 
-    /*
-      自定义初始化构造函数。
-    */
-
+    /* 自定义初始化构造函数。*/
     UpdateNode(): value(value_) {
 
     }
 
 
-    /*
-      懒人标记向下传递时调用，涉及区间操作必须实现。
-    */
+    /*  懒人标记向下传递时调用，涉及区间操作必须实现。*/
     inline void mergeLazyMarks(const UpdateNode& parent_node, int segment_length) {
 
     }
 
 
-    /*
-      清除懒人标记，涉及区间操作必须实现。
-    */
+    /* 清除懒人标记，涉及区间操作必须实现。 */
     inline void clear() {
 
     }
@@ -65,21 +57,15 @@ struct UpdateNode {
 
 struct StaticSegmentTreeNode {
 
-    /*
-      在区间上要维护的变量值，必须实现。
-    */
+    /* 在区间上要维护的变量值，必须实现。*/
     long long sum;
 
 
-    /*
-      构造函数，必须实现。
-    */
+    /* 构造函数，必须实现。*/
     explicit StaticSegmentTreeNode(long long value = 0ll): sum(value) {}
 
 
-    /*
-      重载左右孩子区间合并操作，必须实现。
-    */
+    /* 重载左右孩子区间合并操作，必须实现。*/
     friend StaticSegmentTreeNode operator + (const StaticSegmentTreeNode& a, const StaticSegmentTreeNode& b) {
         StaticSegmentTreeNode res{};
 
@@ -87,10 +73,8 @@ struct StaticSegmentTreeNode {
     }
 
 
-    /*
-      区间更新方法，必须实现。
-    */
-    inline void applyUpdate(UpdateNode value, int segment_length) {
+    /* 区间更新方法，必须实现。*/
+    inline void applyUpdate(const UpdateNode& value, int segment_length) {
         
     }
 
@@ -134,23 +118,17 @@ public:
         build(s, 1, 1, n_);
     }
 
-    /*
-      单点更新。
-    */
-    inline void update(int i, LAZY_TYPE value) {
+    /* 单点更新。*/
+    inline void update(int i, const LAZY_TYPE& value) {
         update(1, 1, n_, i, i, value);
     }
 
-    /*
-      更新区间值。
-    */
-    inline void update(int i, int j, LAZY_TYPE value) {
+    /* 更新区间值。*/
+    inline void update(int i, int j, const LAZY_TYPE& value) {
         update(1, 1, n_, i, j, value);
     }
 
-    /*
-      获取区间节点。
-    */
+    /* 获取区间节点。*/
     inline NODE_TYPE query(int i, int j) {
         return query(1, 1, n_, i, j);
     }
@@ -164,10 +142,8 @@ private:
     std::vector<LAZY_TYPE>                lazy_;
     std::vector<bool>                     has_lazy_;
 
-    /*
-      区间更新。
-    */
-    void update(int p, int l, int r, int i, int j, LAZY_TYPE value) {
+    /* 区间更新。*/
+    void update(int p, int l, int r, int i, int j, const LAZY_TYPE& value) {
         if (USE_LAZY_FLAG) { 
           propagate(p, l, r); 
         }
@@ -192,9 +168,7 @@ private:
         st_[p] = st_[p << 1] + st_[p << 1 | 1];
     };
 
-    /*
-      区间查询。
-    */
+    /* 区间查询。*/
     NODE_TYPE query(int p, int l, int r, int i, int j) {
         if (USE_LAZY_FLAG) { 
             propagate(p, l, r); 
@@ -214,9 +188,7 @@ private:
         }
     }
 
-    /*
-      初始化构造。
-    */
+    /* 初始化构造。*/
     void build(const std::vector<NODE_TYPE>& s, int p, int l, int r) {
         if (l == r) { st_[p] = s[l]; }
         else {
@@ -227,9 +199,7 @@ private:
         }
     }
 
-    /*
-      懒人标记向下传播。
-    */
+    /* 懒人标记向下传播。*/
     inline void propagate(int p, int l, int r) {
         if (has_lazy_[p] == true) {
             st_[p].applyUpdate(lazy_[p], r - l + 1);
