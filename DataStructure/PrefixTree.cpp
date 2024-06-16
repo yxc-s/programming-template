@@ -44,7 +44,7 @@ public:
 template<typename START_ALPHABET, const unsigned int ALPHABET_SIZE>
 class PrefixTree {
 public:
-    PrefixTree() : root_(0) {
+    constexpr PrefixTree() : root_(0) {
         trie_.resize(1);
     }
 
@@ -155,10 +155,10 @@ private:
         int cur = root_;
         for (int i = 30; i >= 0; --i) {
             int p = (x >> i) & 1;
-            if (trie_[cur][p] == 0) {
+            if (trie_[cur].next_[p] == 0) {
                 return 0;
             }
-            cur = trie_[cur][p];
+            cur = trie_[cur].next_[p];
         }
         return cur;
     }
@@ -167,10 +167,10 @@ private:
         int cur = root_;
         for (const auto& x : s) {
             int p = x - getStartAlpha();
-            if (trie_[cur][p] == 0) {
+            if (trie_[cur].next_[p] == 0) {
                 return 0;
             }
-            cur = trie_[cur][p];
+            cur = trie_[cur].next_[p];
         }
         return cur;
     }
@@ -184,5 +184,5 @@ using Trie = PrefixTree<std::integral_constant<decltype(START_ALPHABET), START_A
 
 
 /*
-TODO:如果模板参数是std::integral_constant类型，那么是不是在类中就不需要再使用decltype()进行推导了，直接使用::type就可以。
+TODO:
 */

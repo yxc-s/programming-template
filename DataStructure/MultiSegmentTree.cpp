@@ -105,12 +105,12 @@ class MultiSegmentTree {
 
 
 public:
-    explicit MultiSegmentTree(unsigned int n) : n_(n) {
+    constexpr explicit MultiSegmentTree(unsigned int n) : n_(n) {
         st_.resize(1);
         lchild_.resize(1);
         rchild_.resize(1);
         root_.resize(n_);
-        if (USE_LAZY_FLAG){
+        if constexpr (USE_LAZY_FLAG){
             lazy_.resize(1);
             has_lazy_.resize(1);
         }
@@ -195,7 +195,7 @@ private:
 
     /* 区间查询。*/
     NODE_TYPE query(int p, int l, int r, int i, int j){
-        if (USE_LAZY_FLAG) {
+        if constexpr (USE_LAZY_FLAG) {
             propagate(p, l, r);
         }
         if (l >= i && r <= j){
@@ -215,7 +215,7 @@ private:
 
     /* 合并两棵线段树。*/
     int merge(int p, int q, int l, int r) {
-        if (USE_LAZY_FLAG){
+        if constexpr (USE_LAZY_FLAG){
             propagate(p, lchild_[p], rchild_[p]);
         }
         if (!p || !q) {
@@ -263,6 +263,9 @@ private:
 
 
 };
+
+using MultiSegTree = MultiSegmentTree<false>;
+using MultiSegNode = MultiSegmentTreeNode;
 
 /*
   ToDoList: 

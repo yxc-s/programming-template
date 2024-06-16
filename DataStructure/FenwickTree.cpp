@@ -26,13 +26,13 @@
 class FenwickTree {
 public:
     /* 按区间最大右端点下标构造。*/
-    explicit FenwickTree(unsigned int n) : n_(n) {
+    constexpr explicit FenwickTree(unsigned int n) : n_(n) {
         ft_.resize(n_);
     }
 
     /* 基于已有的数组构造。*/
     FenwickTree(const std::vector<long long>& f) {
-        n_ = int(f.size());
+        n_ = static_cast<int>(f.size());
         ft_.assign(n_, 0);
         for (int i = 1; i < n_; ++i) {
             ft_[i] += f[i];

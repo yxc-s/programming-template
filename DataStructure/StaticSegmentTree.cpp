@@ -2,6 +2,7 @@
  * StaticSegmentTree(静态线段树)
  * 设计思想：静态线段树主要用于先给出一组输入（一般这种输入确定了树中每个节点都会被访问到，所以直接静态开点），并且给出若干个修改和查询的情况。
  * 基于面向对象的编程思想，本方法尽可能多的隐藏了内部实现的细节，并且将必要的编程接口暴露在外部，并需要对这些接口进行直接的修改。
+ * 
  * 在该设计中，需要修改的接口有：
  *                             UpdateNode：该结构体存储了区间上的操作类型：需要自定义结构体变量成员及构造函数；
  *                                         懒人标记的向下传递方法：mergeLazyMarks()；
@@ -34,7 +35,7 @@ struct UpdateNode {
 
 
     /* 自定义初始化构造函数。*/
-    UpdateNode(): value(value_) {
+    UpdateNode(int value_ = 0): value(value_) {
 
     }
 
@@ -100,9 +101,9 @@ class StaticSegmentTree {
 
 
 public:
-    explicit StaticSegmentTree(unsigned int n) : n_(n) {
+    constexpr explicit StaticSegmentTree(unsigned int n) : n_(n) {
         st_.resize(4 * n_);
-        if (USE_LAZY_FLAG){
+        if constexpr (USE_LAZY_FLAG){
             lazy_.resize(4 * n_);
             has_lazy_.resize(4 * n_);
         }
@@ -111,7 +112,7 @@ public:
 
     StaticSegmentTree(const std::vector<NODE_TYPE>& s) : n_(static_cast<int> (s.size()) - 1) {
         st_.resize(4 * n_);
-        if (USE_LAZY_FLAG){
+        if constexpr (USE_LAZY_FLAG){
             lazy_.resize(4 * n_);
             has_lazy_.resize(4 * n_);
         }
@@ -144,7 +145,7 @@ private:
 
     /* 区间更新。*/
     void update(int p, int l, int r, int i, int j, const LAZY_TYPE& value) {
-        if (USE_LAZY_FLAG) { 
+        if constexpr (USE_LAZY_FLAG) { 
           propagate(p, l, r); 
         }
         if (i > j) { 
@@ -170,7 +171,7 @@ private:
 
     /* 区间查询。*/
     NODE_TYPE query(int p, int l, int r, int i, int j) {
-        if (USE_LAZY_FLAG) { 
+        if constexpr (USE_LAZY_FLAG) { 
             propagate(p, l, r); 
         }
         if (l >= i && r <= j) { 
@@ -216,6 +217,9 @@ private:
 
 };
 
+
+using StaticSegTree = StaticSegmentTree<false>;
+using StaticSegNode = StaticSegmentTreeNode;
 /*
   ToDoList:
 

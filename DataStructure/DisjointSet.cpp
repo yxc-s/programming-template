@@ -24,14 +24,13 @@
 
 
 
-#define USE_DSU_SET_ELEMENT 0
-#define USE_DSU_WEIGHT 1
 
+template<const bool USE_DSU_WEIGHT, const bool USE_DSU_SET_ELEMENT = false>
 class DisjointSet {
     friend void unionWeights(DisjointSet& dsu, int x, int y, int px, int py, long long value);
     friend void compressWeights(DisjointSet& dsu, int x, int y);
 public:
-    DisjointSet(int sz) :
+    constexpr explicit DisjointSet(unsigned int sz) :
         sz_(sz),
         num_sets_(sz)
     {
@@ -39,16 +38,16 @@ public:
         std::iota(fa_.begin(), fa_.end(), 0);
         set_size_.assign(sz_, 1);
 
-        #if USE_DSU_WEIGHT
+        if constexpr (USE_DSU_WEIGHT){
             weight_.resize(sz_);
-        #endif
+        }
 
-        #if USE_DSU_SET_ELEMENT
+        if constexpr (USE_DSU_SET_ELEMENT) {
             elements_.resize(sz_);
             for (int i = 0; i < sz_; ++i) {
                 elements_[i].emplace_back(i);
             }
-        #endif
+        }
 
     }
 
@@ -59,9 +58,9 @@ public:
         }
         int par = fa_[x];
         fa_[x] = findSet(fa_[x]);
-        #if USE_DSU_WEIGHT
-        compressWeights(*this, x, par);
-        #endif
+        if constexpr (USE_DSU_WEIGHT) {
+            compressWeights(*this, x, par);
+        }
         return fa_[x];
     }
 
@@ -70,13 +69,11 @@ public:
         return set_size_[findSet(x)];
     }
 
-    #if USE_DSU_WEIGHT
     /* 获取当前元素权重。*/
     long long getWeight(int x) {
         findSet(x);
         return weight_[x];
     }
-    #endif
 
     /* 获取集合数量。*/
     inline int countSets()  {
@@ -97,24 +94,23 @@ public:
         }
         fa_[px] = py;
         num_sets_--;
-        #if USE_DSU_WEIGHT
+        if constexpr(USE_DSU_WEIGHT) {
             unionWeights(*this, x, y, px, py, value);
-        #endif
+        }
         set_size_[py] += set_size_[px];
 
-        #if USE_DSU_SET_ELEMENT
+        if constexpr (USE_DSU_SET_ELEMENT) {
             elements_[y].insert(elements_[y].end(), elements_[x].begin(), elements_[x].end());
             elements_[x].clear();
-        #endif
+        }
         
         return true;
     }
 
-    #if USE_DSU_SET_ELEMENT
+
     inline std::vector<int> getSetElements(int x) {
         return elements_[findSet(x)];
     }
-    #endif
 
 
 private:
@@ -123,17 +119,21 @@ private:
     std::vector<int>                fa_;
     std::vector<int>                set_size_;
     std::vector<long long>          weight_;
-
+    std::vector<std::vector<int>>   elements_;
 
 };
 
 /* x和y是操作时的集合节点，要把x所在集合合并到y。px和py是前两者的集合代表元素。
   value是一个缺省值，代表指定x->y的权值（一般是输入数据），默认为0。*/
-void unionWeights(DisjointSet& dsu, int x, int y, int px, int py, long long value = 0){
+void unionWeights(DisjointSet<true>& dsu, int x, int y, int px, int py, long long value = 0){
 
 }
 
 /* 路径压缩时的更新权重操作，y是x压缩前的直接父亲节点。*/
-void compressWeights(DisjointSet& dsu, int x, int y){
+void compressWeights(DisjointSet<true>& dsu, int x, int y){
 
 }
+
+
+/* 如果是带权并查集，将false改为true，并将上面的两个友元函数实现 */
+using Dsu  = DisjointSet<false>;
