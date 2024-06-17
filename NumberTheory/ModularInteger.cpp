@@ -79,7 +79,7 @@ public:
 	}
 
 	template<typename U>
-	friend operator == (const ModInt<U>& lhs, const ModInt<U>& rhs);
+	friend bool operator == (const ModInt<U>& lhs, const ModInt<U>& rhs);
 
 	template <typename U>
 	friend bool operator < (const ModInt<U>& lhs, const ModInt<U>& rhs);
