@@ -8,6 +8,8 @@
  *              左指针和右指针的初值应该为1和0。
  *              查询离线处理好后，可以直接对查询进行暴力搜索。
  * 
+ * 使用方法：直接将查询放到结构体中进行排序后暴力查询即可。
+ * 
  * gitHub(仓库地址): https://github.com/yxc-s/programming-template.git
  */
 
@@ -36,7 +38,6 @@ struct Query{
         block_id(l / BLOCK_SIZE)
     {}
 
-    
     friend bool operator < (const Query& lhs, const Query& rhs) {
         return lhs.block_id != rhs.block_id ? lhs.block_id < rhs.block_id :
             lhs.block_id & 1 ? lhs.right > rhs.right : lhs.right < rhs.right;
