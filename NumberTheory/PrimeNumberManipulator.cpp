@@ -1,3 +1,24 @@
+/*
+ * PrimeNumberManipulator(质数类)
+ * 设计思想：基于面向对象的思想的质数管理类。
+ * 基于面向对象的编程思想，本方法尽可能多的隐藏了内部实现的细节，并且将必要的编程接口暴露在外部，并需要对这些接口进行直接的修改。
+ *                             注意事项：第一个模板参数的数值必须是int型（在竞赛中范围最大是1e8)
+ *                                      第二个模板参数是代表是否对第一个参数的范围内每个数进行质数统计（范围大概是1e6不会TLE）。
+ *
+ * gitHub(仓库地址): https://github.com/yxc-s/programming-template.git
+ */
+
+
+
+
+
+
+
+
+
+
+
+
 template<typename T, const bool CALCULATE_RANGE_PRIMES = false>
 class PrimeNumberManipulator{
 public:
@@ -171,5 +192,7 @@ const std::vector<int>&                              primes = primer.getPrimeArr
 const std::vector<std::vector<std::pair<int, int>>>& range_primes = primer.getRangePrimesArray();
 
 /*
-TODO: 将大质数的算法也写进去。
+TODO: 第二个模板参数要不要也换成跟第一个模板参数相同的类型，来单独进行筛选？
+      将大质数的算法也写进去。
+       欧拉函数，莫比乌斯函数。
 */

@@ -1,16 +1,14 @@
 /*
- * ModInt(�Զ�����ģ�������������)
- * ���˼�룺�ο���tourist
- * �����������ı��˼�룬�����������ܶ���������ڲ�ʵ�ֵ�ϸ�ڣ����ҽ���Ҫ�ı�̽ӿڱ�¶���ⲿ������Ҫ����Щ�ӿڽ���ֱ�ӵ��޸ġ�
+ * ModInt(自动进行模运算的数据类型)
+ * 设计思想：参考自tourist
+ * 基于面向对象的编程思想，本方法尽可能多的隐藏了内部实现的细节，并且将必要的编程接口暴露在外部，并需要对这些接口进行直接的修改。
  * 
- *                             ʹ�÷���: ��MInt��Ϊ��������������ʹ�ü��ɣ����迼��ģ�������������������
- *                                         vector<MInt> numbers();
- *                                        MInt ans;
- *										  ��Ҫ�����ĵײ�modֵ��Ϊ��Ҫʹ�õ�ģ�����ɡ�
- *                             �����㣺���������ModInt���еľ�̬����MInt::power(MInt a, type b);
- *                             ע�������������Ԫʹ�õ�����չŷ����ã�������Ҫ�����иĳɷ���С������
+ *                             使用方法: 将MInt作为基本数据类型来使用即可，无需考虑模除法运算与运算溢出。
+ *                                      将本文底部mod值改为需要使用的模数即可。
+ *                             幂运算：幂运算基于ModInt类中的静态函数MInt::power(MInt a, type b);
+ *                             注意事项：类内求逆元使用的是拓展欧几里得，如有需要可自行改成费马小定理。
  *
- * gitHub(�ֿ��ַ): https://github.com/yxc-s/programming-template.git
+ * gitHub(仓库地址): https://github.com/yxc-s/programming-template.git
  */
 
 
