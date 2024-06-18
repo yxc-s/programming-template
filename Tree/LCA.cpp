@@ -2,6 +2,7 @@
 /*
  * LCA(最近公共祖先)。
  * gitHub(仓库地址): https://github.com/yxc-s/programming-template.git
+ * 没有以接口的方式实现，目前仅供参考学习。
  */
 
 

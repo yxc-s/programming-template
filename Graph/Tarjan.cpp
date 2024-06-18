@@ -14,9 +14,9 @@
 
 
 template<const unsigned int START_INDEX> 
-class Tarjan{
+class RobertTarjan{
 public:
-    Tarjan(std::vector<std::vector<int>>&& s):
+    RobertTarjan(std::vector<std::vector<int>>&& s):
         al_(s),
         n_(al_.size() - 1),
         timer_(0),
@@ -77,4 +77,4 @@ private:
 };
 
 
-using Tarj = Tarjan<1>;
+using Tarjan = RobertTarjan<1>;

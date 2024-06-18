@@ -2,6 +2,7 @@
 /*
  * Diameter(树的直径)
  * gitHub(仓库地址): https://github.com/yxc-s/programming-template.git
+ * 没有以接口的方式实现，目前仅供参考学习。
  */
 
 
@@ -27,7 +28,7 @@ void dfsDiameter(const std::vector<std::vector<int>>& al){
     std::function<void(int, int, int, bool)> dfs = [&](int u, int p, int d, bool should_record){
         dist[u] = d;
         if (should_record){
-            parent[`u] = p;
+            parent[u] = p;
         }
         for (const auto& v : al[u]){
             if (v != p){
@@ -37,12 +38,12 @@ void dfsDiameter(const std::vector<std::vector<int>>& al){
     };
 
     dfs(1, 0, 0, false);
-    int edge_point_a = std::max_element(dist.begin(), dist.end()) - dist.begin();
-    dfs(edge_point_a, 0, 0, true);
-    int edge_point_b = std::max_element(dist.begin(), dist.end()) - dist.begin();
+    int left_edge_point = std::max_element(dist.begin(), dist.end()) - dist.begin();
+    dfs(left_edge_point, 0, 0, true);
+    int right_edge_point = std::max_element(dist.begin(), dist.end()) - dist.begin();
 
     std::vector<int> path;
-    for (int u = edge_point_b; u; u = parent[u]){
+    for (int u = right_edge_point; u; u = parent[u]){
         path.push_back(u);
     }
 }
