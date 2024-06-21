@@ -37,13 +37,13 @@ struct UpdateNode {
 
 
     /*  懒人标记向下传递时调用，涉及区间操作必须实现。 */
-    inline void mergeLazyMarks(const UpdateNode& parent_node, int segment_length) {
+    void mergeLazyMarks(const UpdateNode& parent_node, int segment_length) {
 
     }
 
 
     /* 清除懒人标记，涉及区间操作必须实现。 */
-    inline void clear() {
+    void clear() {
 
     }
 };
@@ -71,7 +71,7 @@ struct DynamicSegmentTreeNode {
 
 
     /* 区间更新方法，必须实现。*/
-    inline void applyUpdate(const UpdateNode& value, int segment_length) {
+    void applyUpdate(const UpdateNode& value, int segment_length) {
 
     }
 
@@ -112,18 +112,18 @@ public:
 
 
     /* 单点更新。*/
-    inline void update(int i, const LAZY_TYPE& value) {
+    void update(int i, const LAZY_TYPE& value) {
         update(1, left_most_, right_most_, i, i, value);
     }
 
     /* 更新区间值。*/
-    inline void update(int i, int j, const LAZY_TYPE& value) {
+    void update(int i, int j, const LAZY_TYPE& value) {
         assert(USE_LAZY_FLAG == true);
         update(1, left_most_, right_most_, i, j, value);
     }
 
     /* 获取区间节点。*/
-    inline NODE_TYPE query(int i, int j) {
+    NODE_TYPE query(int i, int j) {
         return query(1, left_most_, right_most_, i, j);
     }
 
@@ -197,7 +197,7 @@ private:
     }
 
     /* 懒人标记向下传播。*/
-    inline void propagate(int p, int l, int r) {
+    void propagate(int p, int l, int r) {
         if (has_lazy_[p] == true) {
             st_[p].applyUpdate(lazy_[p], r - l + 1);
             if (l != r) {
@@ -211,7 +211,7 @@ private:
     }
 
     /* 使用该函数完全动态分配空间，一般空间比直接分配内存节省百分之50。*/
-    inline void checkNodeIndex(int& index) {
+    void checkNodeIndex(int& index) {
         if (index == 0) {
             index = static_cast<int> (st_.size());
             st_.emplace_back();

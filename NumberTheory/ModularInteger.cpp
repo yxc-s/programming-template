@@ -14,7 +14,7 @@
 
 
 template<typename T, typename U, typename V>
-T fastPower(T a, U b, const V& mod) {
+inline T fastPower(T a, U b, const V& mod) {
 	assert(b >= 0);
 	T res = 1;
 	for (; b > 0; a = 1ll * a * a % mod, b >>= 1) {

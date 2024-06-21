@@ -137,7 +137,7 @@ private:
 
 
 private:
-    constexpr inline Type getLimit() { return T::value; }
+    constexpr Type getLimit() { return T::value; }
     
     /* 线性筛 */
     void sievePrimes(){

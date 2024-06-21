@@ -52,7 +52,7 @@ public:
     }
 
     /* 获取集合代表元素。*/
-    inline int findSet(int x) {
+    int findSet(int x) {
         if (fa_[x] == x){
             return x;
         }
@@ -65,7 +65,7 @@ public:
     }
 
     /* 获取元素所在集合大小。*/
-    inline int getSetSize(int x) {
+    int getSetSize(int x) {
         return set_size_[findSet(x)];
     }
 
@@ -76,12 +76,12 @@ public:
     }
 
     /* 获取集合数量。*/
-    inline int countSets()  {
+    int countSets()  {
         return num_sets_;
     }
 
     /* 查询两元素是否同一集合。*/
-    inline bool isSameSet(int x, int y) {
+    bool isSameSet(int x, int y) {
         return findSet(x) == findSet(y);
     }
     
@@ -107,8 +107,8 @@ public:
         return true;
     }
 
-
-    inline std::vector<int> getSetElements(int x) {
+    /* 获取集合所有的元素，可能会TLE */
+    std::vector<int> getSetElements(int x) {
         return elements_[findSet(x)];
     }
 
@@ -125,12 +125,12 @@ private:
 
 /* x和y是操作时的集合节点，要把x所在集合合并到y。px和py是前两者的集合代表元素。
   value是一个缺省值，代表指定x->y的权值（一般是输入数据），默认为0。*/
-void unionWeights(DisjointSet<true>& dsu, int x, int y, int px, int py, long long value = 0){
+inline void unionWeights(DisjointSet<true>& dsu, int x, int y, int px, int py, long long value = 0){
 
 }
 
 /* 路径压缩时的更新权重操作，y是x压缩前的直接父亲节点。*/
-void compressWeights(DisjointSet<true>& dsu, int x, int y){
+inline void compressWeights(DisjointSet<true>& dsu, int x, int y){
 
 }
 

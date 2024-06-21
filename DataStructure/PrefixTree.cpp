@@ -151,7 +151,7 @@ private:
     
     constexpr static Type getStartAlpha() { return  START_ALPHABET::value;}
 
-    inline int getLastPointer(const int& x) {
+    int getLastPointer(const int& x) {
         int cur = root_;
         for (int i = 30; i >= 0; --i) {
             int p = (x >> i) & 1;
@@ -163,7 +163,7 @@ private:
         return cur;
     }
 
-    inline int getLastPointer(const std::string& s) {
+    int getLastPointer(const std::string& s) {
         int cur = root_;
         for (const auto& x : s) {
             int p = x - getStartAlpha();

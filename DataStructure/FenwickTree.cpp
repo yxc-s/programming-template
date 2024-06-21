@@ -63,7 +63,7 @@ public:
     }
 
     /* 区间更新。*/
-    inline void update(int l, int r, long long value) {
+    void update(int l, int r, long long value) {
         assert(l > 0 && r >= l);
         update(l, value);
         update(r + 1, -value);
@@ -81,7 +81,7 @@ public:
     }
 
     /* 区间查询。*/
-    inline long long query(int l, int r) {
+    long long query(int l, int r) {
         assert(l <= r);
         return query(r) - query(l - 1);
     }
@@ -94,6 +94,6 @@ private:
 
 
 private:
-    inline int lowbit(int x) { return (x & (-x)); }
+    int lowbit(int x) { return (x & (-x)); }
 
 };
