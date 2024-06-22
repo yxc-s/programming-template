@@ -31,29 +31,36 @@ public:
 
     PrimeNumberManipulator(EnableIfInt<primeType>* = 0, EnableIfInt<rangePrimeType>* = 0){ok = true;}
 
-
+    
     /* 线性筛，再使用其他的涉及到单个数的质因子操作时，需要先调用该接口 */
-    std::vector<int>& getPrimes(){
-        bs_.set();
-        bs_[0] = bs_[1] = 0;
-        for (int i = 2; i <= getPrimeLimit(); ++i){
-            if (bs_[i]){
-                prime_values_.emplace_back(i);
-            }
-            for (const auto& prime : prime_values_){
-                if (1ll * i * prime > getPrimeLimit()){
-                    break;
+    void sievePrimes(){
+        if (prime_values_.empty()){
+            bs_.set();
+            bs_[0] = bs_[1] = 0;
+            for (int i = 2; i <= getPrimeLimit(); ++i){
+                if (bs_[i]){
+                    prime_values_.emplace_back(i);
                 }
-                bs_[i * prime] = 0;
-                if (i % prime == 0){
-                    break;
+                for (const auto& prime : prime_values_){
+                    if (1ll * i * prime > getPrimeLimit()){
+                        break;
+                    }
+                    bs_[i * prime] = 0;
+                    if (i % prime == 0){
+                        break;
+                    }
                 }
             }
         }
+    }
+
+    /* 获取质数列表 */
+    std::vector<int>& getPrimesArray(){
+        assert(!prime_values_.empty());
         return prime_values_;
     }
 
-    /* 获取范围内每个数出现的质数数量 */
+    /* 获取范围内每个数的质因子数量 */
     std::vector<int>& countRangePrimes(){
         range_prime_nums_.resize(getRangePrimeLimit() + 1);
         for (int i = 2; i <= getRangePrimeLimit(); ++i){
@@ -70,7 +77,7 @@ public:
         return range_prime_nums_;
     }
 
-    /* 获取[1, x]范围内每个数的质因子及其出现次数*/
+    /* 获取[1, x]范围内每个数的质因子及其数量*/
     std::vector<std::vector<std::pair<int, int>>>& getRangePrimes(){
         range_prime_values_.resize(getRangePrimeLimit() + 1);
         for (int i = 2; i <= getRangePrimeLimit(); ++i){
@@ -92,6 +99,7 @@ public:
      /* 统计单个数中不相同的质数数量 */
     template<typename V>
     int countUniquePrimes(V x){
+        assert(!prime_values_.empty());
         int ans = 0;
         for (const auto& prime : prime_values_){
             if (prime > x / prime){
@@ -108,6 +116,7 @@ public:
     /* 统计单个数中所有的质数数量 */
     template<typename V>
     int countAllPrimes(V x){
+        assert(!prime_values_.empty());
         int ans = 0;
         for (const auto& prime : prime_values_){
             if (prime > x / prime){
@@ -124,6 +133,7 @@ public:
     /* 获取单个数中的质因子及出现次数 */
     template <typename V>
     std::vector<std::pair<V, int>> getUniquePrimes(V x){
+        assert(!prime_values_.empty());
         std::vector<std::pair<V, int>> res;
         for (const auto& prime : prime_values_){
             if (1ll * prime * prime > x){
@@ -147,6 +157,7 @@ public:
     /* 判定质数，当筛选范围为1e8时，最多可判断1e16的质数*/
     template<typename V>
     bool isPrime(V x){
+        assert(!prime_values_.empty());
         if (x <= getPrimeLimit()){
             return bs_[x];
         }
@@ -161,6 +172,7 @@ public:
     /* 统计因子数量 */
     template<typename V>
     int countDivisors(V x){
+        assert(!prime_values_.empty());
         int ans = 1;
         for (const auto& prime : prime_values_){
             if (prime > x / prime){
