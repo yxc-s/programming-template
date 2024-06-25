@@ -117,6 +117,12 @@ public:
 		return res;
 	}
 
+
+    ModInt<T> power(long long b){
+        ModInt<T> res = ModInt::power(*this, b);
+        return res;
+    }
+
 private:
 	Type value_;
 	constexpr static Type getModValue() { return T::value; }
