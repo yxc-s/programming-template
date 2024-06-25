@@ -16,65 +16,92 @@
 template<const unsigned int START_INDEX> 
 class RobertTarjan{
 public:
-    RobertTarjan(std::vector<std::vector<int>>&& s):
-        al_(s),
-        n_(al_.size() - 1),
-        timer_(0),
-        low_(n_ + 1, -1),
-        dfn_(n_ + 1, -1),
-        in_stack_(n_ + 1, false)
-        {}
+    RobertTarjan() = default;
 
     
-    /* 获取所有的连通分量 */
-    const std::vector<std::vector<int>>& getScc(){
-        for (int i = START_INDEX; i <= n_; ++i){
-            if (dfn_[i] == -1){
-                dfsScc(i);
-            }
-        }
-        return components_;
-    }
-
-
-private:
-    size_t                           n_;
-    size_t                           timer_;
-    std::vector<std::vector<int>>    al_;
-    std::vector<std::vector<int>>    components_;
-    std::vector<int>                 low_;
-    std::vector<int>                 dfn_;
-    std::vector<bool>                in_stack_;
-    std::stack<int>                  stk_;
-    
-
-    void dfsScc(int u){
-        low_[u] = dfn_[u] = timer_ ++;
-        in_stack_[u] = true;
-        stk_.push(u);
-        for (const auto& v : al_[u]){
-            if (dfn_[v] == -1){
-                dfsScc(v);
-                low_[u] = std::min(low_[u], low_[v]);
-            }
-            else if (in_stack_[v]){
-                low_[u] = std::min(low_[u], low_[v]);
-            }
-        }
-        if (low_[u] == dfn_[u]){
-            components_.emplace_back();
-            while (!stk_.empty()){
-                int cur = stk_.top();
-                stk_.pop();
-                components_.back().emplace_back(cur);
-                in_stack_[cur] = false;
-                if (cur == u){
-                    break;
+    /* 获取所有的连通分量（必须是有向图,无向图直接搜索或者dsu) */
+    static std::vector<std::vector<int>> getScc(std::vector<std::vector<int>>& al){
+        int timer = 0;
+        int n     = (int)(al.size()) - 1;
+        std::stack<int>                 stk;
+        std::vector<int>                low(n + 1, -1);
+        std::vector<int>                dfn(n + 1, -1);
+        std::vector<bool>               in_stack(n + 1, false);
+        std::vector<std::vector<int>>   components;
+        std::function<void(int)> dfs = [&](int u){
+            low[u] = dfn[u] = (++ timer);
+            in_stack[u] = true;
+            stk.push(u);
+            for (const auto& v : al[u]){
+                if (dfn[v] == -1){
+                    dfs(v);
+                    low[u] = std::min(low[u], low[v]);
+                }
+                else if (in_stack[v]){
+                    low[u] = std::min(low[u], low[v]);
                 }
             }
+            if (low[u] == dfn[u]){
+                components.emplace_back();
+                while (!stk.empty()){
+                    int cur = stk.top();
+                    stk.pop();
+                    components.back().emplace_back(cur);
+                    in_stack[cur] = false;
+                    if (cur == u){
+                        break;
+                    }
+                }
+            }
+        };
+        for (int i = START_INDEX; i <= n; ++i){
+            if (dfn[i] == -1){
+                dfs(i);
+            }
         }
+        return components;
     }
+
+    /* 获取图中所有的割点 */
+    static std::vector<int> getCutVertices(std::vector<std::vector<int>>& al){
+        int timer = 0;
+        int n     = (int)(al.size()) - 1;
+        std::vector<int>                low(n + 1, -1);
+        std::vector<int>                dfn(n + 1, -1);
+        std::vector<int>                cut_points;
+        std::function<void(int, int)> dfs = [&](int u, int p){
+            dfn[u] = low[u] = (++ timer);
+            int nums_child = 0;
+            for (const auto& v : al[u]){
+                if (v != p){
+                    if (dfn[v] != -1){
+                        low[u] = std::min(low[u], dfn[v]);
+                    }
+                    else{
+                        dfs(v, u);
+                        low[u] = std::min(low[u], dfn[v]);
+                        if (low[v] >= dfn[u] && p != -1){
+                            cut_points.push_back(u);
+                        }
+                        ++ nums_child;
+                    }
+                }
+            }
+            if (p == -1 && nums_child > 1){
+                cut_points.push_back(u);
+            }
+        };
+        for (int i = START_INDEX; i <= n; ++i){
+            if (dfn[i] == -1){
+                dfs(i, -1);
+            }
+        }
+        return cut_points;  
+    }
+
+    
+
 };
 
-
+/* 1代表图中起始节点下标，也可以设置为0 */
 using Tarjan = RobertTarjan<1>;
