@@ -1,9 +1,9 @@
 /*
  * Tarjan
- * 设计思想：目前只实现强连通分量查询，基于有向图的遍历过程中维护的栈与访问次序来判定连通分量。
+ * 设计思想：Tarjan算法的核心思想是根据dfs的时间戳信息来 寻找有向图中的连通分量、 寻找无向图中的割点和割边。
  * 基于面向对象的编程思想，本方法尽可能多的隐藏了内部实现的细节，并且将必要的编程接口暴露在外部，并需要对这些接口进行直接的修改。
- *                             使用方法: 将图数据作为模板参数传进来，只支持vector实现的二维邻接表。
- *                                      节点起始下标可以根据模板参数指定0或者1，构建Tarjan时可以使用std::move()。
+ *                             使用方法: 函数均以静态函数实现，将图的节点信息以基于二维的vector容器进行存储后，直接在调用函数时传递进去即可。
+ *                                      节点起始下标可以根据模板参数指定0或者1。
  *
  * gitHub(仓库地址): https://github.com/yxc-s/programming-template.git
  */
@@ -63,7 +63,7 @@ public:
     }
 
     /* 获取图中所有的割点 */
-    static std::vector<int> getCutVertices(std::vector<std::vector<int>>& al){
+    static std::vector<int> getCutVertices(const std::vector<std::vector<int>>& al){
         int timer = 0;
         int n     = (int)(al.size()) - 1;
         std::vector<int>                low(n + 1, -1);
@@ -79,10 +79,10 @@ public:
                     }
                     else{
                         dfs(v, u);
-                        low[u] = std::min(low[u], dfn[v]);
                         if (low[v] >= dfn[u] && p != -1){
                             cut_points.push_back(u);
                         }
+                        low[u] = std::min(low[u], dfn[v]);
                         ++ nums_child;
                     }
                 }
@@ -99,9 +99,42 @@ public:
         return cut_points;  
     }
 
+    /* 获取图中所有的割边 */
+    static std::vector<std::pair<int, int>> getCutEdges(const std::vector<std::vector<int>>& al){
+        int timer = 0;
+        int n     = (int)(al.size()) - 1;
+        std::vector<int>                  low(n + 1, -1);
+        std::vector<int>                  dfn(n + 1, -1);
+        std::vector<std::pair<int, int>>  cut_edges;
+        std::function<void(int, int)> dfs = [&](int u, int p){
+            dfn[u] = low[u] = (++ timer);
+            for (const auto& v : al[u]){
+                if (v != p){
+                    if (dfn[v] != -1){
+                        low[u] = std::min(low[u], low[v]);
+                    }
+                    else{
+                        dfs(v, u);
+                        if (low[v] > dfn[u]){
+                            cut_edges.emplace_back(u, v);
+                        }
+                        low[u] = std::min(low[u], low[v]);
+                    }
+                }
+            }
+        };
+        for (int i = START_INDEX; i <= n; ++i){
+            if (dfn[i] == -1){
+                dfs(i, -1);
+            }
+        }
+        return cut_edges;  
+    }
     
 
 };
+
+/* TODO: 相同的割点是否被多次存储?*/
 
 /* 1代表图中起始节点下标，也可以设置为0 */
 using Tarjan = RobertTarjan<1>;
