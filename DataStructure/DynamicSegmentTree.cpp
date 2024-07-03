@@ -1,3 +1,4 @@
+
 /*
  * DynamicSegmentTreeNode(动态线段树)
  * 设计思想：动态开点，适用于4 * n静态可能爆栈以及需要维护负数区间的情况。
@@ -27,11 +28,11 @@
 /* 该节点定义在区间上的操作，可以根据输入的类型重写该结构体。*/
 struct UpdateNode {
     /* 自定义区间要执行的操作变量。*/
-    int value;
+    long long value;
 
 
     /* 自定义初始化构造函数。*/
-    UpdateNode(int value_ = 0ll): value(value_) {
+    UpdateNode(long long value_ = 0ll): value(value_) {
 
     }
 
@@ -44,7 +45,7 @@ struct UpdateNode {
 
     /* 清除懒人标记，涉及区间操作必须实现。 */
     void clear() {
-
+        
     }
 };
 
@@ -93,18 +94,18 @@ struct DynamicSegmentTreeNode {
   初始化形参必须包含要维护区间的左右两个端点值。
 */
 
-template<const bool USE_LAZY_FLAG>
+template<typename T, typename U, const bool USE_LAZY_FLAG>
 class DynamicSegmentTree {
     using LAZY_TYPE      =      UpdateNode;
     using NODE_TYPE      =      DynamicSegmentTreeNode;
 
 
 public:
-    DynamicSegmentTree(int l, int r) : left_most_(l), right_most_(r) {
+    DynamicSegmentTree() {
         st_.resize(2);
         lchild_.resize(2);
         rchild_.resize(2);
-        if (USE_LAZY_FLAG){
+        if constexpr (USE_LAZY_FLAG){
             lazy_.resize(2);
             has_lazy_.resize(2);
         }
@@ -113,30 +114,35 @@ public:
 
     /* 单点更新。*/
     void update(int i, const LAZY_TYPE& value) {
-        update(1, left_most_, right_most_, i, i, value);
+        update(1, getLeftMost(), getRightMost(), i, value);
     }
 
     /* 更新区间值。*/
     void update(int i, int j, const LAZY_TYPE& value) {
         assert(USE_LAZY_FLAG == true);
-        update(1, left_most_, right_most_, i, j, value);
+        update(1, getLeftMost(), getRightMost(), i, j, value);
     }
 
     /* 获取区间节点。*/
     NODE_TYPE query(int i, int j) {
-        return query(1, left_most_, right_most_, i, j);
+        return query(1, getLeftMost(), getRightMost(), i, j);
     }
 
 
 private:
-    int          left_most_;
-    int          right_most_;
-
     std::vector<NODE_TYPE>                st_;
     std::vector<LAZY_TYPE>                lazy_;
     std::vector<int>                      lchild_;
     std::vector<int>                      rchild_;
     std::vector<bool>                     has_lazy_;
+
+    constexpr static auto getRightMost() ->decltype(U::value){
+        return U::value;
+    }   
+
+    constexpr static auto getLeftMost() -> decltype(T::value){
+        return T::value;
+    }
 
     /* 区间更新。*/
     void update(int p, int l, int r, int i, int j, const LAZY_TYPE& value) {
@@ -158,10 +164,10 @@ private:
         st_[p] = st_[lchild_[p]] + st_[rchild_[p]];
     };
  
-    /* 线段树单点更新，位置在pos，数值是value。*/
+    /* 单点更新 */
     void update(int p, int l, int r, int pos, const LAZY_TYPE& value) {
         if (l == r) {
-            st_[p].applyUpdate(value, pos);
+            st_[p].applyUpdate(value, 1);
             return;
         }
         int mid = (l + r) >> 1;
@@ -176,15 +182,15 @@ private:
         st_[p] = st_[lchild_[p]] + st_[rchild_[p]];
     }
 
-    /* 区间查询。*/
+    /* 区间查询 */
     NODE_TYPE query(int p, int l, int r, int i, int j) {
-        if (USE_LAZY_FLAG) {
+        if constexpr (USE_LAZY_FLAG) {
             propagate(p, l, r);
         }
         if (l >= i && r <= j){
             return st_[p];
         }
-        int mid = (l + r - 1) >> 1;
+        int mid = (l + r) >> 1;
         if (j <= mid) {
             return query(lchild_[p], l, mid, i, j);
         }
@@ -217,7 +223,7 @@ private:
             st_.emplace_back();
             lchild_.emplace_back(0);
             rchild_.emplace_back(0);
-            if (USE_LAZY_FLAG){
+            if constexpr(USE_LAZY_FLAG){
                 lazy_.emplace_back();
                 has_lazy_.emplace_back(false);
             }
@@ -227,6 +233,15 @@ private:
 
 };
 
+
+constexpr const long long LEFT_MOST      =  1;
+constexpr const long long RIGHT_MOST     =  1e5 + 10;
+constexpr const bool      USE_LAZY_FLAG  =  true;
+using DynSegTree = DynamicSegmentTree<std::integral_constant<decltype(LEFT_MOST), LEFT_MOST>, 
+    std::integral_constant<decltype(RIGHT_MOST), RIGHT_MOST>, USE_LAZY_FLAG>;
+using DynSegNode = DynamicSegmentTreeNode;
+
+
 /*
-  ToDoList: 研究一下负数区间是如何维护的。该数据结构未经测试，暂不更新。
+  ToDoList: 负数区间的维护，在计算mid时方式是否需要调整？
 */
