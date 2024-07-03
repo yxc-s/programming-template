@@ -56,6 +56,7 @@ public:
 
     /* 单点更新。 */
     void update(int pos, long long value) {
+        assert(pos > 0);
         while (pos < n_) {
             ft_[pos] += value;
             pos += lowbit(pos);
