@@ -62,6 +62,11 @@ public:
         return components;
     }
 
+    /* 割点有两种情况： 
+      case1当前点是遍历入口处的顶点，如果该点有多个孩子，那么去掉该点后原图不连通，该点为割点。
+      case2考虑当前点对(u, v)(u是父亲节点)，v的最早dfs序（low值）>= dfn[u]，说明访问点v必须经过点u，所以去掉点u及u周围的所有边后，原图将不连通 
+    */
+
     /* 获取图中所有的割点 */
     static std::vector<int> getCutVertices(const std::vector<std::vector<int>>& al){
         int timer = 0;
@@ -96,9 +101,11 @@ public:
                 dfs(i, -1);
             }
         }
+        //TODO:是否要排序去重
         return cut_points;  
     }
 
+    /*割边只有一种情况，仍然考虑有序对(u, v)，如果v的最早dfs序（low序） > dfn[u]，说明访问点v必须经过点u，则删除(u, v)边后，原图不再连通，(u, v)是割边。*/
     /* 获取图中所有的割边 */
     static std::vector<std::pair<int, int>> getCutEdges(const std::vector<std::vector<int>>& al){
         int timer = 0;
