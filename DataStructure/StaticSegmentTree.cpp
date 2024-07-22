@@ -63,7 +63,7 @@ struct StaticSegmentTreeNode {
 
 
     /* 构造函数，必须实现。*/
-    explicit StaticSegmentTreeNode(long long value = 0ll): sum(value) {}
+    StaticSegmentTreeNode(long long value = 0ll): sum(value) {}
 
 
     /* 重载左右孩子区间合并操作，必须实现。*/
@@ -101,7 +101,7 @@ class StaticSegmentTree {
 
 
 public:
-    constexpr explicit StaticSegmentTree(unsigned int n) : n_(n) {
+    StaticSegmentTree(unsigned int n) : n_(n) {
         st_.resize(4 * n_);
         if constexpr (USE_LAZY_FLAG){
             lazy_.resize(4 * n_);

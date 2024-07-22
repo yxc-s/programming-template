@@ -33,7 +33,7 @@ struct UpdateNode {
 
 
     /* 自定义初始化构造函数。*/
-    explicit UpdateNode(int value_ = 0): value(value_) {
+    UpdateNode(int value_ = 0): value(value_) {
 
     }
 
@@ -105,7 +105,7 @@ class MultiSegmentTree {
 
 
 public:
-    constexpr explicit MultiSegmentTree(unsigned int n) : n_(n) {
+    MultiSegmentTree(unsigned int n) : n_(n) {
         st_.resize(1);
         lchild_.resize(1);
         rchild_.resize(1);

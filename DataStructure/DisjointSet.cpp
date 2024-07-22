@@ -30,7 +30,7 @@ class DisjointSet {
     friend void unionWeights(DisjointSet& dsu, int x, int y, int px, int py, long long value);
     friend void compressWeights(DisjointSet& dsu, int x, int y);
 public:
-    constexpr explicit DisjointSet(unsigned int sz) :
+    DisjointSet(unsigned int sz) :
         sz_(sz),
         num_sets_(sz)
     {

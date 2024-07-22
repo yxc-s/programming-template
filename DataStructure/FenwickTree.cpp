@@ -26,7 +26,7 @@
 class FenwickTree {
 public:
     /* 按区间最大右端点下标构造。*/
-    constexpr explicit FenwickTree(unsigned int n) : n_(n) {
+    FenwickTree(unsigned int n) : n_(n) {
         ft_.resize(n_);
     }
 

@@ -60,7 +60,7 @@ struct DynamicSegmentTreeNode {
 
 
     /* 构造函数，必须实现。*/
-    explicit DynamicSegmentTreeNode(long long value = 0ll): sum(value) {}
+    DynamicSegmentTreeNode(long long value = 0ll): sum(value) {}
 
 
     /* 重载左右孩子区间合并操作，必须实现。*/
