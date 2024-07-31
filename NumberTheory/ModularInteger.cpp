@@ -13,6 +13,7 @@
 
 
 
+//TODO:增加更多的运算符重载
 template<typename T, typename U, typename V>
 inline T fastPower(T a, U b, const V& mod) {
 	assert(b >= 0);
@@ -45,9 +46,11 @@ template<typename T>
 class ModInt {
 public:
 	using Type = typename std::decay<decltype(T::value)>::type;
-	ModInt() : value_(0) {}
+	ModInt(long long value = 0) : value_(value) {}
+	ModInt(const ModInt<T>& other) = default;
+    ModInt(ModInt<T>&& other) : value_(other.value_) {}
+    ~ModInt() = default;
 
-	ModInt(const long long& value) : value_(normalize(value)) {}
 
 	ModInt& operator += (const ModInt& other) { return value_ = normalize(value_ + other.value_), *this; }
 	ModInt& operator -= (const ModInt& other) { return value_ = normalize(value_ - other.value_), *this; }
@@ -57,6 +60,18 @@ public:
 	ModInt  operator -- (int) { ModInt res(*this); return *this -= 1, res; }
 	template<typename U> ModInt& operator += (const U& other) { return *this += ModInt(other); }
 	template<typename U> ModInt& operator -= (const U& other) { return *this -= ModInt(other); }
+
+    ModInt& operator =(const ModInt& other) {
+        if (this != &other) {
+            value_ = other.value_;
+        }
+        return *this;
+    }
+
+    ModInt& operator =(long long x) {
+        *this *= x;
+        return *this;
+    }
 
 	template <typename U = T>
 	typename std::enable_if<std::is_same<typename ModInt<U>::Type, int>::value, ModInt>::type& operator *= (const ModInt& other) {
@@ -117,11 +132,8 @@ public:
 		return res;
 	}
 
-
-    ModInt<T> power(long long b){
-        ModInt<T> res = ModInt::power(*this, b);
-        return res;
-    }
+    ModInt power(long long b) { return ModInt::power(*this, b); }
+    ModInt power(ModInt<T> b) { return ModInt::power(*this, b.value_); }
 
 private:
 	Type value_;
