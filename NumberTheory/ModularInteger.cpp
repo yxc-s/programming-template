@@ -9,11 +9,18 @@
  *                             注意事项：类内求逆元使用的是拓展欧几里得，如有需要可自行改成费马小定理。
  *
  * gitHub(仓库地址): https://github.com/yxc-s/programming-template.git
- */
+ 
 
 
 
-//TODO:增加更多的运算符重载
+
+
+
+
+
+
+ 
+ *///TODO:增加更多的运算符重载
 template<typename T, typename U, typename V>
 inline T fastPower(T a, U b, const V& mod) {
 	assert(b >= 0);
@@ -118,7 +125,10 @@ public:
 		return res;
 	}
 
-	//Type operator () () const { return this->value_; }
+	/* 获取原本元素值，或者转为整形 */
+	Type operator () () const { return this->value_; }
+    operator int() const noexcept{ return static_cast<int>(value_); }
+	operator long long() const noexcept { return static_cast<long long> (value_); }
 
 	template<typename U, typename V>
 	static U power(U a, V b) {
@@ -132,8 +142,9 @@ public:
 		return res;
 	}
 
-    ModInt power(long long b) { return ModInt::power(*this, b); }
-    ModInt power(ModInt<T> b) { return ModInt::power(*this, b.value_); }
+    ModInt power(long long b) const noexcept { return ModInt::power(*this, b); }
+
+
 
 private:
 	Type value_;
