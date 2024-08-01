@@ -27,9 +27,11 @@
 
 template<const bool USE_DSU_WEIGHT, const bool USE_DSU_SET_ELEMENT = false>
 class DisjointSet {
+    using this_dsu_type = DisjointSet<USE_DSU_WEIGHT, USE_DSU_SET_ELEMENT>;
     friend void unionWeights(DisjointSet& dsu, int x, int y, int px, int py, long long value);
     friend void compressWeights(DisjointSet& dsu, int x, int y);
 public:
+	/* 默认构造函数 */
     DisjointSet(unsigned int sz) :
         sz_(sz),
         num_sets_(sz)
@@ -48,7 +50,33 @@ public:
                 elements_[i].emplace_back(i);
             }
         }
+    }
 
+    /* 默认拷贝构造，拷贝赋值，析构函数 */
+    ~DisjointSet() = default;
+    DisjointSet(const this_dsu_type& other) = default;
+    this_dsu_type& operator =(const this_dsu_type& other) = default;
+
+    /* 移动构造函数 */
+    DisjointSet(this_dsu_type&& other) :
+        sz_(other.sz_),
+        num_sets_(other.num_sets_),
+        fa_(std::move(other.fa_)),
+		set_size_(std::move(other.set_size_)),
+        weight_(std::move(other.weight_)),
+        elements_(std::move(other.elements_)){}
+
+    /* 移动赋值函数 */
+    this_dsu_type& operator =(this_dsu_type&& other) {
+        if (this != &other) {
+            sz_ = other.sz_;
+            num_sets_ = other.num_sets_;
+            fa_ = std::move(other.fa_);
+            set_size_ = std::move(other.set_size_);
+            weight_ = std::move(other.weight_);
+            elements_ = std::move(other.elements_);
+        }
+        return *this;
     }
 
     /* 获取集合代表元素。*/
@@ -76,7 +104,7 @@ public:
     }
 
     /* 获取集合数量。*/
-    int countSets()  {
+    int countSets() const noexcept {
         return num_sets_;
     }
 
@@ -108,7 +136,7 @@ public:
     }
 
     /* 获取集合所有的元素，可能会TLE */
-    std::vector<int> getSetElements(int x) {
+    std::vector<int>& getSetElements(int x) {
         return elements_[findSet(x)];
     }
 

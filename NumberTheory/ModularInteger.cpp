@@ -55,8 +55,8 @@ public:
 	using Type = typename std::decay<decltype(T::value)>::type;
 	ModInt(long long value = 0) : value_(value) {}
 	ModInt(const ModInt<T>& other) = default;
-    ModInt(ModInt<T>&& other) : value_(other.value_) {}
-    ~ModInt() = default;
+	ModInt(ModInt<T>&& other) : value_(other.value_) {}
+	~ModInt() = default;
 
 
 	ModInt& operator += (const ModInt& other) { return value_ = normalize(value_ + other.value_), *this; }
@@ -68,17 +68,17 @@ public:
 	template<typename U> ModInt& operator += (const U& other) { return *this += ModInt(other); }
 	template<typename U> ModInt& operator -= (const U& other) { return *this -= ModInt(other); }
 
-    ModInt& operator =(const ModInt& other) {
-        if (this != &other) {
-            value_ = other.value_;
-        }
-        return *this;
-    }
+	ModInt& operator =(const ModInt& other) {
+		if (this != &other) {
+			value_ = other.value_;
+		}
+		return *this;
+	}
 
-    ModInt& operator =(long long x) {
-        *this *= x;
-        return *this;
-    }
+	ModInt& operator =(long long x) {
+		*this *= x;
+		return *this;
+	}
 
 	template <typename U = T>
 	typename std::enable_if<std::is_same<typename ModInt<U>::Type, int>::value, ModInt>::type& operator *= (const ModInt& other) {
@@ -127,7 +127,7 @@ public:
 
 	/* 获取原本元素值，或者转为整形 */
 	Type operator () () const { return this->value_; }
-    operator int() const noexcept{ return static_cast<int>(value_); }
+	operator int() const noexcept{ return static_cast<int>(value_); }
 	operator long long() const noexcept { return static_cast<long long> (value_); }
 
 	template<typename U, typename V>
@@ -142,7 +142,7 @@ public:
 		return res;
 	}
 
-    ModInt power(long long b) const noexcept { return ModInt::power(*this, b); }
+	ModInt power(long long b) const noexcept { return ModInt::power(*this, b); }
 
 
 
