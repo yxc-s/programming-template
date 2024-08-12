@@ -21,25 +21,28 @@
 
 
 
-template<const unsigned int BLOCK_SIZE>
-struct Query{
-    unsigned int left;
-    unsigned int right;
-    unsigned int query_id;
-    unsigned int block_id;
-    long long ans;
+template<int BLOCK_SIZE>
+struct MoQuery{
+    int left;
+    int right;
+    int query_id;
+    int block_id;
 
-    Query(){}
-
-    Query(unsigned int l_, unsigned int r_, unsigned int id_):
+    MoQuery() = default;
+    MoQuery(int l_, int r_, int id_):
         left(l_),
         right(r_),
         query_id(id_),
-        block_id(l / BLOCK_SIZE)
+        block_id(l_ / BLOCK_SIZE)
     {}
+    ~MoQuery() = default;
 
-    friend bool operator < (const Query& lhs, const Query& rhs) {
+
+    friend bool operator < (const MoQuery& lhs, const MoQuery& rhs) {
         return lhs.block_id != rhs.block_id ? lhs.block_id < rhs.block_id :
             lhs.block_id & 1 ? lhs.right > rhs.right : lhs.right < rhs.right;
     }
 };
+
+constexpr int N = (int)1e6;
+using Query = MoQuery<(int)std::sqrt(N)>;
