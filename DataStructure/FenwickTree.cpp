@@ -42,6 +42,17 @@ public:
         }
     }
 
+    /* 移动构造，减少一次资源分配 */
+    FenwickTree(std::vector<long long>&& f) {
+        n_ = static_cast<int>(f.size());
+        ft_ = std::move(f);
+        for (int i = 1; i < n_; ++i) {
+            if (i + lowbit(i) < n_) {
+                ft_[i + lowbit(i)] += ft_[i];
+            }
+        }
+    }
+
     /* 按数组元素出现频次构造*/
     FenwickTree(const std::vector<int>& s) {
         n_ = *std::max_element(s.begin() + 1, s.end()) + 1;
@@ -89,12 +100,10 @@ public:
 
 
 private:
-    unsigned int n_;
-
-    std::vector<long long> ft_;
+    int n_;
+    std::vector<long long>  ft_;
 
 
 private:
-    int lowbit(int x) { return (x & (-x)); }
-
+    int lowbit(int x) const noexcept{ return (x & (-x)); }
 };
