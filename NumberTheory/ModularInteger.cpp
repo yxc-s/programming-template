@@ -53,7 +53,7 @@ template<typename T>
 class ModInt {
 public:
 	using Type = typename std::decay<decltype(T::value)>::type;
-	ModInt(long long value = 0) : value_(value) {}
+	ModInt(long long value = 0) : value_(normalize(value)) {}
 	ModInt(const ModInt<T>& other) = default;
 	ModInt(ModInt<T>&& other) : value_(other.value_) {}
 	~ModInt() = default;
