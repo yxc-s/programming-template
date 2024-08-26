@@ -75,8 +75,9 @@ public:
 		return *this;
 	}
 
-	ModInt& operator =(long long x) {
-		*this *= x;
+    template<typename U, typename = std::enable_if_t<std::is_integral_v<U>>>
+	ModInt& operator =(U x) {
+		value_ = normalize(x);
 		return *this;
 	}
 
